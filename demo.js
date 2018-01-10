@@ -1,9 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
 
   // setTimeout(function(){demoEl.innerHTML = element;},3000);
-  demo(new ElememntObj(element1, add1, remove2), 3000)
-    .then(() => demo(new ElememntObj(element2, add3,remove1),4000),null)
-    .then(() => demo(new ElememntObj(element3, add2, remove2), 3000))
+  demo(new ElemementObj(element1, add1, remove2), 3000)
+    .then(() => demo(new ElemementObj(element2, add3,remove1),4000),null)
+    .then(() => demo(new ElemementObj(element3, add2, remove2), 3000));
 });
 
 const demo = function(elobj, time){
@@ -11,7 +11,7 @@ const demo = function(elobj, time){
       elobj.build(resolve,reject,time);
     });
 };
-class ElememntObj{
+class ElemementObj{
   constructor(el, add, remove){
     this.el = el;
     this.add = add;
@@ -31,9 +31,7 @@ class ElememntObj{
     window.test = ()=>console.log("test func");
     window.destroyReject = this.destroyReject.bind(this);
 
-    console.log(this.el);
-    this.add(this.el,this.stay);
-    
+    this.add(this.el,this.stay);    
     this.to = setTimeout(this.destroy.bind(this), time);
   }
   destroyReject(){
@@ -125,3 +123,52 @@ const remove2 = function (el) {
   setTimeout(() => { el.style.opacity = '0'; }, 0);
   setTimeout(() => { demoEl.removeChild(el); }, 1000);
 };
+
+
+
+class runner {
+
+  constructor(elobjs){
+    this.elements = elobjs;
+    this.index=0;
+    this.to = null;
+  }
+  run(){
+    const obj = this.elements[this.index];
+    ++this.index;
+    this.destroyCurrent = obj.destroy;
+    this.bindMethods();
+
+    obj.build();
+    this.to = setTimeout(function(){
+      obj.destroy();
+      run();
+    }, obj.time);
+  }
+  bindMethods(){
+    window.stay = this.stay.bind(this);
+    window.destroy = this.destroy.bind(this);
+    window.test = () => console.log("test func");
+    window.destroyReject = this.destroyReject.bind(this);
+  }
+  goBack(){
+    this.destroyCurrent();
+    this.index = this.index - 2;
+    this.clear();
+    this.run();
+  }
+  clear(){
+    clearTimeout(this.to);
+  }
+  stay(){
+    clearTimeout(this.to);
+  }
+  destroyCurrent(){
+    // dymanically set in build()
+  }
+  endRun(){
+    this.destroyCurrent();
+    this.clear();
+  }
+
+}
