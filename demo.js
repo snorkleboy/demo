@@ -1,52 +1,20 @@
 document.addEventListener("DOMContentLoaded", function () {
+  const objs = [
+    new ElementObj(element1, add1,remove1,3000),
+    new ElementObj(element2, add2, remove2, 1000),
+    new ElementObj(element3,add3, remove2, 2000)
+  ];
+  const runner = new Runner(objs).run;
 
-  // setTimeout(function(){demoEl.innerHTML = element;},3000);
-  demo(new ElemementObj(element1, add1, remove2), 3000)
-    .then(() => demo(new ElemementObj(element2, add3,remove1),4000),null)
-    .then(() => demo(new ElemementObj(element3, add2, remove2), 3000));
 });
 
-const demo = function(elobj, time){
-    return new Promise((resolve, reject)=>{
-      elobj.build(resolve,reject,time);
-    });
-};
-class ElemementObj{
-  constructor(el, add, remove){
+
+class ElementObj{
+  constructor(el, add, remove,time){
     this.el = el;
     this.add = add;
     this.remove = remove;
-    this.to = null;
-    this.resolve = null;
-  }
-  build(resolve,reject, time){
-    this.resolve = resolve;
-    this.reject = reject;
-    
-    // this.el.setAttribute('stay', this.stay.bind(this));
-    // this.el.setAttribute('destroy', this.destroy.bind(this));
-    // this.el.setAttribute('test', function(){console.log("this")});
-    window.stay = this.stay.bind(this);
-    window.destroy = this.destroy.bind(this);
-    window.test = ()=>console.log("test func");
-    window.destroyReject = this.destroyReject.bind(this);
-
-    this.add(this.el,this.stay);    
-    this.to = setTimeout(this.destroy.bind(this), time);
-  }
-  destroyReject(){
-
-    clearTimeout(this.to);
-    this.reject();
-    this.destroy();
-  }
-  destroy(){
-    this.remove(this.el);
-    this.resolve('resolved promise');
-    clearTimeout(this.to);
-  }
-  stay(){
-    clearTimeout(this.to);
+    this.time = time;
   }
 }
 
@@ -126,28 +94,32 @@ const remove2 = function (el) {
 
 
 
-class runner {
+class Runner {
 
   constructor(elobjs){
+    console.log(elobjs)
     this.elements = elobjs;
     this.index=0;
     this.to = null;
   }
   run(){
     const obj = this.elements[this.index];
+    
     ++this.index;
-    this.destroyCurrent = obj.destroy;
+    //this destroycurrent will be put on the window for the element to use
+    this.destroyCurrent = obj.remove;
     this.bindMethods();
-
-    obj.build();
-    this.to = setTimeout(function(){
-      obj.destroy();
-      run();
-    }, obj.time);
+    const destroyRun = function () {
+      obj.remove();
+      this.run();
+    };
+    destroyRun.bind(this)
+    obj.add();
+    this.to = setTimeout(destroyRun, obj.time);
   }
   bindMethods(){
     window.stay = this.stay.bind(this);
-    window.destroy = this.destroy.bind(this);
+    window.destroy = this.destroyCurrent.bind(this);
     window.test = () => console.log("test func");
     window.destroyReject = this.destroyReject.bind(this);
   }
