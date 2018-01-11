@@ -4,7 +4,8 @@ document.addEventListener("DOMContentLoaded", function () {
     new ElementObj(element2, add2, remove2, 1000),
     new ElementObj(element3,add3, remove2, 2000)
   ];
-  const runner = new Runner(objs).run;
+  const runner = new Runner(objs);
+  runner.run();
 
 });
 
@@ -16,6 +17,13 @@ class ElementObj{
     this.remove = remove;
     this.time = time;
   }
+  build(){
+    this.add(this.el);
+  }
+  destroy(){
+    this.remove(this.el);
+  }
+  
 }
 
 
@@ -97,7 +105,7 @@ const remove2 = function (el) {
 class Runner {
 
   constructor(elobjs){
-    console.log(elobjs)
+    console.log(elobjs);
     this.elements = elobjs;
     this.index=0;
     this.to = null;
@@ -107,21 +115,20 @@ class Runner {
     
     ++this.index;
     //this destroycurrent will be put on the window for the element to use
-    this.destroyCurrent = obj.remove;
+    this.destroyCurrent = obj.destroy;
     this.bindMethods();
     const destroyRun = function () {
-      obj.remove();
+      obj.destroy();
       this.run();
     };
-    destroyRun.bind(this)
-    obj.add();
-    this.to = setTimeout(destroyRun, obj.time);
+    console.log('here')
+    obj.build();
+    this.to = setTimeout(destroyRun.bind(this), obj.time);
   }
   bindMethods(){
     window.stay = this.stay.bind(this);
     window.destroy = this.destroyCurrent.bind(this);
     window.test = () => console.log("test func");
-    window.destroyReject = this.destroyReject.bind(this);
   }
   goBack(){
     this.destroyCurrent();
