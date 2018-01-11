@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   const objs = [
     new ElementObj(element1, add1,remove1,3000),
-    new ElementObj(element2, add2, remove2, 1000),
+    new ElementObj(element2, add2, remove2, 3000),
     new ElementObj(element3,add3, remove2, 2000)
   ];
   const runner = new Runner(objs);
@@ -35,7 +35,6 @@ element1.innerHTML = `
   <button onclick="stay()">stay</button>
   <button onclick="destroy()">destroy</button>
   <button onclick="test()">test</button>
-  <button onclick="destroyReject()">REJECT</button>
 </div>
 `;
 const element2 = document.createElement('div');
@@ -44,6 +43,7 @@ element2.innerHTML = `
   <h2> This is second demo page</h2>
   <button onclick="stay()">stay</button>
   <button onclick="destroy()">destroy</button>
+  <button onclick="goBack()">goback</button>
   <button onclick="test()">test</button>
 </div>
 `;
@@ -109,45 +109,53 @@ class Runner {
     this.elements = elobjs;
     this.index=0;
     this.to = null;
+    this.current = null;
   }
   run(){
+    if (this.index > this.elements.length){
+      return true;
+    }
     const obj = this.elements[this.index];
-    
-    ++this.index;
-    //this destroycurrent will be put on the window for the element to use
-    this.destroyCurrent = obj.destroy;
+    this.current = obj;
     this.bindMethods();
+    obj.build();
+
     const destroyRun = function () {
       obj.destroy();
+      ++this.index;
       this.run();
     };
-    console.log('here')
-    obj.build();
     this.to = setTimeout(destroyRun.bind(this), obj.time);
   }
   bindMethods(){
     window.stay = this.stay.bind(this);
     window.destroy = this.destroyCurrent.bind(this);
-    window.test = () => console.log("test func");
+    window.goBack = this.goBack.bind(this);
   }
   goBack(){
-    this.destroyCurrent();
-    this.index = this.index - 2;
-    this.clear();
-    this.run();
-  }
-  clear(){
-    clearTimeout(this.to);
+    console.log("outside")
+    if (this.index - 1>= 0){
+      console.log("inside")
+      clearTimeout(this.to);
+      this.current.destroy();
+      this.index = this.index - 1;
+      console.log("index", this.index)
+      this.run();
+    }
   }
   stay(){
     clearTimeout(this.to);
   }
   destroyCurrent(){
-    // dymanically set in build()
+    clearTimeout(this.to);
+    this.current.destroy();
+    ++this.index;
+    this.run();
+
   }
   endRun(){
-    this.destroyCurrent();
-    this.clear();
+    clearTimeout(this.to);
+    this.current.destroy();
   }
 
 }
