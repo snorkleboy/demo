@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   const objs = [
-    new ElementObj(element1, add1,remove1,3000),
+    new ElementObj(element1, add2,remove2,3000),
     new ElementObj(element2, add2, remove2, 3000),
     new ElementObj(element3,add3, remove2, 2000)
   ];
@@ -54,6 +54,7 @@ element3.innerHTML = `
   <h2> third page</h2>
   <button onclick="stay()">stay</button>
   <button onclick="destroy()">destroy</button>
+  <button onclick="goBack()">goback</button>
   <button onclick="test()">test</button>
 </div>
 `;
@@ -112,6 +113,7 @@ class Runner {
     this.current = null;
   }
   run(){
+    console.log(this.index);
     if (this.index > this.elements.length){
       return true;
     }
@@ -129,29 +131,30 @@ class Runner {
   }
   bindMethods(){
     window.stay = this.stay.bind(this);
-    window.destroy = this.destroyCurrent.bind(this);
+    window.destroy = this.destroyCurrentAndRun.bind(this);
     window.goBack = this.goBack.bind(this);
   }
   goBack(){
-    console.log("outside")
-    if (this.index - 1>= 0){
-      console.log("inside")
+    if (this.index >= 1){
       clearTimeout(this.to);
-      this.current.destroy();
+      this.destroyCurrent();
+      console.log("index to destroy", this.index)
       this.index = this.index - 1;
-      console.log("index", this.index)
+      console.log("index to run", this.index)
       this.run();
     }
   }
   stay(){
     clearTimeout(this.to);
   }
+  destroyCurrentAndRun() {
+    this.destroyCurrent();
+    ++this.index;
+    this.run();
+  }
   destroyCurrent(){
     clearTimeout(this.to);
     this.current.destroy();
-    ++this.index;
-    this.run();
-
   }
   endRun(){
     clearTimeout(this.to);
