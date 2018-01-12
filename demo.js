@@ -16,12 +16,15 @@ class ElementObj{
     this.remove = remove;
     this.time = time;
     this.CBScript = CBScript;
+    this.attached = false;
   }
   build(){
     this.add(this.el);
+    this.attached = true;
   }
   destroy(next){
     this.remove(next, this.el);
+    this.attached = false;
   }
   
 }
@@ -52,11 +55,11 @@ class Runner {
     window.demo.end = this.endRun.bind(this);
   }
   goBack(){
-    if (this.index >= 1){
+    if (this.index >= 0){
       clearTimeout(this.to);
       this.destroyCurrent();
-      console.log("index to destroy", this.index);
-      this.index = this.index - 1;
+      console.log("index to destroy", this.index-1);
+      this.index = this.index - 2;
       console.log("index to run", this.index);
       this.run();
     }
@@ -65,15 +68,15 @@ class Runner {
     clearTimeout(this.to);
   }
   destroyCurrentAndRun() {
+    clearTimeout(this.to);
     this.current.destroy(this.run.bind(this));
   }
   destroyCurrent(){
     clearTimeout(this.to);
-    this.current.destroy();
+    this.current.destroy(function(){});
   }
   endRun(){
-    clearTimeout(this.to);
-    this.current.destroy();
+    if (this.current.attached) this.destroyCurrent();
   }
 }
 
@@ -128,6 +131,7 @@ element3.innerHTML = `
 `;
 
 const add1 = function (el) {
+  el.style.opacity = '1';
   el.style.position = 'absolute';
   const demoEl = document.getElementById('demo');
   demoEl.appendChild(el);
@@ -158,7 +162,7 @@ const add3 = function (el) {
 const remove1 = function (next, el) {
   const demoEl = document.getElementById('demo');
   demoEl.removeChild(el);
-  next();
+  if (typeof next === 'function') next();
 };
 
 const remove2 = function (next, el) {
