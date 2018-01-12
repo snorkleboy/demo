@@ -1,35 +1,35 @@
 document.addEventListener("DOMContentLoaded", function () {
     const demo = [
-        new DemoObj(element1, add1, remove2, 5000, script1),
-        new DemoObj(element2, add2, remove2, 5000, script1),
+        new DemoObj(element1, add1, remove2, 5000),
+        new DemoObj(element2, add2, remove2, 5000),
         new DemoObj(element3, add3, remove3, 5000)
     ];
     new DemoRunner(demo).run();
 
 });
-
-const script1 = function () {
+const element1 = ()=>{ 
     const arbButton = document.getElementById('arb');
     console.log(arbButton);
     for (let i = 0; i < 5; i++) {
         arbButton.click();
     }
-
-}
-const element1 = document.createElement('div');
-element1.innerHTML = `
-<div class='aa'>
- <h2> 1</h2>
-  <h2> this is template</h2>
-  <h1> it might explain stuff</h1>
-  <button onclick="demo.stay()">stay</button>
-  <button onclick="demo.destroy()">destroy</button>
-  <button onclick="demo.test()">test</button>
-  <button onClick="demo.end()">end demo</button>
-</div>
-`;
-const element2 = document.createElement('div');
-element2.innerHTML = `
+    return (`
+                <div class='aa'>
+                <h2> 1</h2>
+                <h2> this is template</h2>
+                <h1> it might explain stuff</h1>
+                <button onclick="demo.stay()">stay</button>
+                <button onclick="demo.destroy()">destroy</button>
+                <button onclick="demo.test()">test</button>
+                <button onClick="demo.end()">end demo</button>
+                </div>`)
+;};
+const element2 = () =>{
+    const arbButton = document.getElementById('arb');
+    for (let i = 0; i < 5; i++) {
+        arbButton.click();
+    }
+    return( `
 <div class='aa'>
  <h2> 2</h2>
   <h2> This is second demo page</h2>
@@ -40,10 +40,9 @@ element2.innerHTML = `
 
   <button onClick="demo.end()">end demo</button>
 </div>
-`;
+`)};
 
-const element3 = document.createElement('div');
-element3.innerHTML = `
+const element3 = ()=> (`
 <div onclick='stay()' class='aa'>
   <h2> third page</h2>
   <h2> 3</h2>
@@ -54,7 +53,7 @@ element3.innerHTML = `
 
   <button onClick="demo.end()">end demo</button>
 </div>
-`;
+`);
 
 const add1 = function (el) {
     el.style.opacity = '1';
