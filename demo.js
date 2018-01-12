@@ -42,7 +42,7 @@ class DemoRunner {
     window.demo.end = this.endRun.bind(this);
   }
   goBack() {
-    if (this.index >= 1) {
+    if (this.index > 1) {
       clearTimeout(this.to);
       this.destroyCurrent();
       console.log("index to destroy", this.index - 1);
