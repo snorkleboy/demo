@@ -5,12 +5,15 @@ class DemoObj{
     this.remove = remove;
     this.time = time;
     this.CBScript = CBScript;
+    this.attached = false;
   }
   build(){
     this.add(this.el);
+    this.attached = true;
   }
   destroy(next){
     this.remove(next, this.el);
+    this.attached = false;
   }
   
 }
@@ -62,6 +65,7 @@ class DemoRunner {
     this.current.destroy(function(){});
   }
   endRun(){
+    clearTimeout(this.to);
     if (this.current.attached) this.destroyCurrent();
   }
 }
