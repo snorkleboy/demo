@@ -100,3 +100,6 @@ class DemoRunner {
 
   }
 };
+var exports = module.exports;
+module.exports.DemoObj = DemoObj;
+module.exports.DemoRunner = DemoRunner;

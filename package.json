@@ -1,0 +1,31 @@
+{
+  "name": "demoizer",
+  "version": "1.0.0",
+  "description": "A Javascript package that helps create an animated HTML demo sequence. you define a callback that retuns innerHTML, a callback that defines how an element is attached to the dom, and a callback for how its taken off. ",
+  "main": "demo.js",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/snorkleboy/demo.git"
+  },
+  "keywords": [
+    "demo",
+    "tutorial",
+    "demoizer",
+    "demomaker",
+    "tutorialmaker",
+    "arranger",
+    "sequencer"
+  ],
+  "author": "Artem Kharshan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/snorkleboy/demo/issues"
+  },
+  "homepage": "https://github.com/snorkleboy/demo#readme"
+}
