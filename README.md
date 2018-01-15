@@ -2,7 +2,6 @@
 This is a JavaScript App to help make and sequence a Demo function. It lets you dynamically and  asynchronously create HTML elements and call scripts at different life-cycle hooks. 
 [The best example of It in action currently is my other project:](https://github.com/snorkleboy/Compression-visualizer/blob/master/js/demo.js)
 
-##How to
 ### OverView
   you Need to instantiate a DemoRunner obj with an array of DemoObjs and then call Toggle() on it. DemoObjs have a function which returns the InnerHTML of that element, a add function which attaches it to the dom, a remove function which detaches, and a time which tells the Demo runner how long to leave the element up before calling destroy() on it. 
   The DemoRunner has functions on it which let you manipulate the demo sequence, such as endRun() or stay();
@@ -10,17 +9,19 @@ This is a JavaScript App to help make and sequence a Demo function. It lets you 
   ```
   constructor(InnerHTMLFunction, add, remove, time, ...cbScripts)
   ```
+  #### InnerHTMLFunction
   the InnerHTMLFunction should be a function that retuns inner html. When build() is called on the DemoObj by the Runner a new Div element will be created and its innerHTML set to the InnerHTMLFunction(), for example
   ```
   const firstEl = () => `<h1> Hello World </h1>`
-  ````
+  ```
+  #### Add
   the add function should a be function which takes in a HTML element and attaches it to the dom. It can also optionally take in a message parameter which will be the return of the last Remove()
   ```
   const add = function (el, message) {
     parent.appendChild(el);
 };
   ```
-  
+  #### Remove
   the remove function should take in an element to remove, and crucially a next callback which will start the build of the next DemoObj
   ```
   export const fadeOut = function (el, next) {
@@ -28,10 +29,17 @@ This is a JavaScript App to help make and sequence a Demo function. It lets you 
         next();
 };
 ```
+#### time
 
 the time parameter is the number of milliseconds for the element to stay before its remove() is called, which should call next()
+#### cbScripts
 
-Lastly the ...cbScripts arguments will collect functions put at the end of the constructor and call them after build() has been run.
+Lastly the ...cbScripts arguments will collect functions put at the end of the constructor and call them after build() has been run. and they are called with a referene to the DemoRunner so you can do something like
+```
+export const stay = function (runner) {
+    runner.stay();
+};
+```
 If you want to bind custom event handlers or have various actions happen after the element has been added a cbScript is the place to do it
 all together
   ```  
@@ -46,10 +54,12 @@ all together
     parent.removeChild(el)
     next()
   }
-  
+  export const stay = function (runner) {
+    runner.stay();
+};
   const demo = [
     new DemoObj(firstEl, add, remove, 3500),
-    new DemoObj(secondEl, add, remove, 13000),
+    new DemoObj(secondEl, add, remove, 13000, stay),
    ]
   new DemoRunner(demo).toggle();
  ```
