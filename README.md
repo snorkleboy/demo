@@ -1,7 +1,7 @@
 # Demoizer
 This is a JavaScript App to help make and sequence a Demo function. It lets you dynamically and  asynchronously create HTML elements and call scripts at different life-cycle hooks. 
 [The best example of It in action currently is my other project:](https://github.com/snorkleboy/Compression-visualizer/blob/master/js/demo.js)
-[demo]!(http://res.cloudinary.com/flyakite/video/upload/c_scale,w_654/v1515997239/DemoDemo_uhbcc1.gif)
+![demo](http://res.cloudinary.com/flyakite/video/upload/c_scale,w_654/v1515997239/DemoDemo_uhbcc1.gif)
 
 ### OverView
   The DemoRunner obj keeps an array of DemoObjs, calls build() on one and starts a cancellabe countdown ontil it calls Destroy() on the DemoObj, which calls build() on the next DemoObj. You can run custom scripts for each DemoObj using the cbScript callbacks, as well as in the add, remove callbacks. 
