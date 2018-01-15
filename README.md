@@ -45,7 +45,7 @@ export const stay = function (runner) {
 note that some default function are bound to the window
 
 If you want to bind custom event handlers or have various actions happen after the element has been added a cbScript is the place to do it
-all together
+####all together
   ```  
   const firstEl = () => `<h1> Hello World </h1>`
   const secondEl = () => `<h1> Hello Again </h1>
@@ -67,8 +67,6 @@ all together
    ]
   new DemoRunner(demo).toggle();
  ```
- 
- DemoRunner binds some  
 ### the DemoRunner
 ```
 constructor(elobjs, destroyCB)
