@@ -3,8 +3,8 @@ This is a JavaScript App to help make and sequence a Demo function. It lets you 
 [The best example of It in action currently is my other project:](https://github.com/snorkleboy/Compression-visualizer/blob/master/js/demo.js)
 
 ### OverView
-  you Need to instantiate a DemoRunner obj with an array of DemoObjs and then call Toggle() on it. DemoObjs have a function which returns the InnerHTML of that element, a add function which attaches it to the dom, a remove function which detaches, and a time which tells the Demo runner how long to leave the element up before calling destroy() on it. 
-  The DemoRunner has functions on it which let you manipulate the demo sequence, such as endRun() or stay();
+  The DemoRunner obj keeps an array of DemoObjs, calls build() on one and starts a cancellabe countdown ontil it calls Destroy() on the DemoObj, which calls build() on the next DemoObj. You can run custom scripts for each DemoObj using the cbScript callbacks, as well as in the add, remove callbacks. 
+  The DemoRuner has functions that allow you to have the current DemoObj stay, be destroyed immediately and run the next Demobj, go back a DemoObj, or to quit out of the demo entirely. 
 
   ### the DemoObj
     A DemoObj requires atleast 4 arguments and its constructor looks like
@@ -70,8 +70,48 @@ all together
  
  DemoRunner binds some  
 ### the DemoRunner
+```
+constructor(elobjs, destroyCB)
+```
 
-#### destroy Callback
+```
+  run(message) {
+    if (this.index > this.elements.length - 1) return this.endRun();
+    const obj = this.elements[this.index];
+    this.current = obj;
+    this.bindMethods();
+    obj.build(message);
+    ++this.index;
+    this.to = setTimeout(this.destroyCurrentAndRun.bind(this), obj.time);
+    const that = this;
+    obj.cbScripts.forEach(function(cbScript){
+      if (typeof cbScript === 'function') cbScript(that);
+    });
+  }
+  ```
+  
+  ```
+    stay() {
+    clearTimeout(this.to);
+  }
+  destroyCurrentAndRun() {
+    clearTimeout(this.to);
+    this.current.destroy(this.run.bind(this));
+  }
+  ```
+  #### destroy Callback
+```
+  endRun() {
+    clearTimeout(this.to);
+    if (this.current.attached) this.destroyCurrent();
+    this.switch = false;
+    if (typeof this.destroyCB === 'function') this.destroyCB();
+    window.demo = undefined;
+    this.index = 0;
+    
+  }
+  ```
+
 #### window Methods
 ```
     window.demo.stay = this.stay.bind(this);
