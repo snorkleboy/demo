@@ -6,8 +6,8 @@ This is a JavaScript App to help make and sequence a Demo function. It lets you 
   The DemoRunner obj keeps an array of DemoObjs, calls build() on one and starts a cancellabe countdown ontil it calls Destroy() on the DemoObj, which calls build() on the next DemoObj. You can run custom scripts for each DemoObj using the cbScript callbacks, as well as in the add, remove callbacks. 
   The DemoRuner has functions that allow you to have the current DemoObj stay, be destroyed immediately and run the next Demobj, go back a DemoObj, or to quit out of the demo entirely. 
 
-  ### the DemoObj
-    A DemoObj requires atleast 4 arguments and its constructor looks like
+ ### the DemoObj
+ A DemoObj requires atleast 4 arguments and its constructor looks like
   ```
   constructor(InnerHTMLFunction, add, remove, time, ...cbScripts)
   ```
