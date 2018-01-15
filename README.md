@@ -5,7 +5,9 @@ This is a JavaScript App to help make and sequence a Demo function. It lets you 
 ### OverView
   you Need to instantiate a DemoRunner obj with an array of DemoObjs and then call Toggle() on it. DemoObjs have a function which returns the InnerHTML of that element, a add function which attaches it to the dom, a remove function which detaches, and a time which tells the Demo runner how long to leave the element up before calling destroy() on it. 
   The DemoRunner has functions on it which let you manipulate the demo sequence, such as endRun() or stay();
-  A DemoObj requires atleast 4 arguments and its constructor looks like
+
+  ### the DemoObj
+    A DemoObj requires atleast 4 arguments and its constructor looks like
   ```
   constructor(InnerHTMLFunction, add, remove, time, ...cbScripts)
   ```
@@ -34,12 +36,14 @@ This is a JavaScript App to help make and sequence a Demo function. It lets you 
 the time parameter is the number of milliseconds for the element to stay before its remove() is called, which should call next()
 #### cbScripts
 
-Lastly the ...cbScripts arguments will collect functions put at the end of the constructor and call them after build() has been run. and they are called with a referene to the DemoRunner so you can do something like
+Lastly the ...cbScripts arguments will collect functions put at the end of the constructor and call them after build() has been run. and they are called with a referene to the DemoRunner so you can do something like:
 ```
 export const stay = function (runner) {
-    runner.stay();
+    runner.stay(); // same as window.demo.stay()
 };
 ```
+note that some default function are bound to the window
+
 If you want to bind custom event handlers or have various actions happen after the element has been added a cbScript is the place to do it
 all together
   ```  
@@ -67,12 +71,14 @@ all together
  DemoRunner binds some  
 ### the DemoRunner
 
-####destroy Callback
-####window Methods
-
-### the DemoObj
-
-####cbScripts
+#### destroy Callback
+#### window Methods
+```
+    window.demo.stay = this.stay.bind(this);
+    window.demo.destroyCurrentAndRun = this.destroyCurrentAndRun.bind(this); //next
+    window.demo.goBack = this.goBack.bind(this);
+    window.demo.endRun = this.endRun.bind(this);
+```
 ```
 export const stay = function (runner) {
     runner.stay();
