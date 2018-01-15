@@ -1,12 +1,3 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const demo = [
-        new DemoObj(element1, add1, remove2, 5000),
-        new DemoObj(element2, add2, remove2, 5000),
-        new DemoObj(element3, add3, remove3, 5000)
-    ];
-    new DemoRunner(demo).run();
-
-});
 
 
 const element1 = ()=>{ 
@@ -16,15 +7,15 @@ const element1 = ()=>{
         arbButton.click();
     }
     return (`
-                <div class='aa'>
-                <h2> 1</h2>
-                <h2> this is template</h2>
-                <h1> it might explain stuff</h1>
-                <button onclick="demo.stay()">stay</button>
-                <button onclick="demo.destroy()">destroy</button>
-                <button onclick="demo.test()">test</button>
-                <button onClick="demo.end()">end demo</button>
-                </div>`)
+<div class='aa'>
+<h2> 1</h2>
+<h2> this is template</h2>
+<h1> it might explain stuff</h1>
+<button onclick="demo.stay()">stay</button>
+<button onclick="demo.destroyCurrentAndRun()">destroy</button>
+<button onclick="demo.test()">test</button>
+<button onClick="demo.endRun()">end demo</button>
+</div>`)
 ;};
 const element2 = () =>{
     const arbButton = document.getElementById('arb');
@@ -36,24 +27,24 @@ const element2 = () =>{
  <h2> 2</h2>
   <h2> This is second demo page</h2>
   <button onclick="demo.stay()">stay</button>
-  <button onclick="demo.destroy()">destroy</button>
+  <button onclick="demo.destroyCurrentAndRun()">destroy</button>
   <button onclick="demo.goBack()">goback</button>
   <button onclick="demo.test()">test</button>
 
-  <button onClick="demo.end()">end demo</button>
+  <button onClick="demo.endRun()">end demo</button>
 </div>
 `)};
 
 const element3 = ()=> (`
-<div onclick='stay()' class='aa'>
+<div class='aa'>
   <h2> third page</h2>
   <h2> 3</h2>
   <button onclick="demo.stay()">stay</button>
-  <button onclick="demo.destroy()">destroy</button>
+  <button onclick="demo.destroyCurrentAndRun()">destroy</button>
   <button onclick="demo.goBack()">goback</button>
   <button onclick="demo.test()">test</button>
 
-  <button onClick="demo.end()">end demo</button>
+  <button onClick="demo.endRun()">end demo</button>
 </div>
 `);
 
@@ -86,13 +77,13 @@ const add3 = function (el) {
     setTimeout(() => { el.style.right = '500px'; }, 0);
 };
 
-const remove1 = function (next, el) {
+const remove1 = function (el, next) {
     const demoEl = document.getElementById('demo');
     demoEl.removeChild(el);
     if (typeof next === 'function') next();
 };
 
-const remove2 = function (next, el) {
+const remove2 = function (el, next) {
     const demoEl = document.getElementById('demo');
     el.style.transition = 'opacity .3s';
     el.style.opacity = '1';
@@ -103,8 +94,19 @@ const remove2 = function (next, el) {
     }, 500);
 };
 
-const remove3 = function (next, el) {
+const remove3 = function (el, next) {
     const demoEl = document.getElementById('demo');
     demoEl.removeChild(el);
     next();
 };
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const demo = [
+        new DemoObj(element1, add1, remove2, 5000),
+        new DemoObj(element2, add2, remove2, 5000),
+        new DemoObj(element3, add3, remove3, 5000)
+    ];
+    new DemoRunner(demo).toggle();
+
+});
