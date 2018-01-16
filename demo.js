@@ -11,19 +11,7 @@ class DemoObj {
   build(message) {
     this.el = document.createElement('div');
     this.el.id = 'DemoDiv';
-    try {
-      this.el.innerHTML = this.htmlMaker();
-    }
-    catch (err) {
-      typeof this.el.innerHTML !== 'function' ?
-        console.log(`DemoObjs first parameter must be a function which returns InnerHtml`,
-          `
-      got:${typeof this.el} :${this.el}
-      expected: a function which returns HTML
-      `) :
-        console.log(err);
-
-    }
+    this.el.innerHTML = this.htmlMaker();
     this.add(this.el, message);
     this.attached = true;
   }
@@ -39,7 +27,6 @@ class DemoRunner {
     this.index = 0;
     this.to = null;
     this.current = null;
-
     this.switch = false;
   }
   toggle() {
@@ -98,7 +85,6 @@ class DemoRunner {
     this.switch = false;
     if (typeof this.destroyCB === 'function') this.destroyCB();
     this.index = 0;
-
   }
 };
 var exports = module.exports;

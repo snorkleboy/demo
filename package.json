@@ -1,6 +1,6 @@
 {
   "name": "demoizer",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "A Javascript package that helps create an animated HTML demo sequence. you define a callback that retuns innerHTML, a callback that defines how an element is attached to the dom, and a callback for how its taken off. ",
   "main": "demo.js",
   "directories": {
