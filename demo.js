@@ -62,7 +62,7 @@ class DemoRunner {
       this.to = setTimeout(this.destroyCurrentAndRun.bind(this), obj.time);
       const that = this;
       obj.cbScripts.forEach(function (cbScript) {
-        if (typeof cbScript === 'function') cbScript(that);
+        if (typeof cbScript === 'function') cbScript(that,obj);
       });
     }
   }
