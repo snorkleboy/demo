@@ -52,17 +52,19 @@ class DemoRunner {
 
   }
   run(message) {
-    if (this.index > this.elements.length - 1) return this.endRun();
-    const obj = this.elements[this.index];
-    this.current = obj;
-    this.bindMethods();
-    obj.build(message);
-    ++this.index;
-    this.to = setTimeout(this.destroyCurrentAndRun.bind(this), obj.time);
-    const that = this;
-    obj.cbScripts.forEach(function (cbScript) {
-      if (typeof cbScript === 'function') cbScript(that);
-    });
+    if(this.switch){
+      if (this.index > this.elements.length - 1) return this.endRun();
+      const obj = this.elements[this.index];
+      this.current = obj;
+      this.bindMethods();
+      obj.build(message);
+      ++this.index;
+      this.to = setTimeout(this.destroyCurrentAndRun.bind(this), obj.time);
+      const that = this;
+      obj.cbScripts.forEach(function (cbScript) {
+        if (typeof cbScript === 'function') cbScript(that);
+      });
+    }
   }
   bindMethods() {
     window.demo = {};
@@ -95,7 +97,6 @@ class DemoRunner {
     if (this.current.attached) this.destroyCurrent();
     this.switch = false;
     if (typeof this.destroyCB === 'function') this.destroyCB();
-    window.demo = undefined;
     this.index = 0;
 
   }
