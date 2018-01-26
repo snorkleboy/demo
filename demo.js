@@ -34,15 +34,12 @@ class DemoRunner {
     if (!this.switch) {   
       this.switch = true;
       this.run();
-      
     } else {
       this.endRun();
     }
 
   }
   run(message) {
-    console.log('runnin')
-    console.log(this.switch)
     if(this.switch){
       
       if (this.index > this.elements.length - 1) return this.endRun();
