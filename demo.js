@@ -30,16 +30,21 @@ class DemoRunner {
     this.switch = false;
   }
   toggle() {
-    if (!this.switch) {
-      this.run();
+    
+    if (!this.switch) {   
       this.switch = true;
+      this.run();
+      
     } else {
       this.endRun();
     }
 
   }
   run(message) {
+    console.log('runnin')
+    console.log(this.switch)
     if(this.switch){
+      
       if (this.index > this.elements.length - 1) return this.endRun();
       const obj = this.elements[this.index];
       this.current = obj;
@@ -87,6 +92,6 @@ class DemoRunner {
     this.index = 0;
   }
 };
-var exports = module.exports;
-module.exports.DemoObj = DemoObj;
-module.exports.DemoRunner = DemoRunner;
+// var exports = module.exports;
+// module.exports.DemoObj = DemoObj;
+// module.exports.DemoRunner = DemoRunner;
