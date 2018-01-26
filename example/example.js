@@ -9,12 +9,12 @@ document.addEventListener('DOMContentLoaded',()=>{
 
     const add = (el) => {
         parent.appendChild(el);
-    }
+    };
 
     const remove = (el, next) => {
         parent.removeChild(el);
         next();
-    }
+    };
     const stay = function (runner) {
         runner.stay();
     };
